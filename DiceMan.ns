@@ -1,0 +1,174 @@
+// Text of project DiceMan written on 9/2/97 at 5:49 PM
+// Beginning of file main view
+diceMan :=
+    {viewBounds: {left: -4, top: 14, right: 200, bottom: 58},
+     viewEffect: 188980257,
+     debug: "diceMan",
+     _proto: @180
+    };
+
+rollButton :=
+    {
+     buttonClickScript:
+       // This program is a dice rolling simulator in the form of a small palette
+       // After setting the number of dice, the type of dice and any positive or
+       // negative modifiers, the program "rolls" that many dice and provides
+       // an answer.
+       
+       func()
+       begin
+       	print(diceNumber.numberOfDice & "d" & diceType.whatDice & dicePlusOrMinus.modfiyRoll & diceModify.amountToModify);
+       end,
+     text: "Roll",
+     viewBounds: {left: 140, top: 28, right: 168, bottom: 40},
+     debug: "rollButton",
+     _proto: @226
+    };
+AddStepForm(diceMan, rollButton);
+
+
+
+theD :=
+    {
+     text:
+       // In AD&D and other games the 'X d Y' notation is used to show how many
+       // of what type of dice are needed. For example '4d6' would mean four rolls
+       // on a six-sided die.
+       
+       "d",
+     viewBounds: {left: 45, top: 3, right: 61, bottom: 19},
+     viewJustify: 8388610,
+     viewFont: ROM_fontSystem12Bold,
+     debug: "theD",
+     _proto: @218
+    };
+AddStepForm(diceMan, theD);
+
+
+
+diceType :=
+    {labelCommands: ["2","4", "6", "8", "10", "12", "16", "20", "100"],
+     viewBounds: {left: 68, top: 4, right: 112, bottom: 16},
+     viewFormat: 50397776,
+     pickActionScript:
+       // Here the type of die is discovered by converting to integer the
+       // string located at the 'itemSelected' index of the 'labelCommands' array.
+       
+       func(itemSelected)
+       begin
+       	inherited:?pickActionScript(itemSelected);		// this method is defined internally
+       	whatDice := Floor(StringToNumber(labelCommands[itemSelected]));
+       	print("Selected dice type " & whatDice);
+       end,
+     whatDice: 2,
+     debug: "diceType",
+     _proto: @190
+    };
+AddStepForm(diceMan, diceType);
+
+
+
+diceNumber :=
+    {
+     labelCommands:
+       ["1","2","3","4","5","6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
+     ,
+     viewBounds: {left: 4, top: 4, right: 40, bottom: 16},
+     viewFormat: 50397776,
+     pickActionScript:
+       // Here the number of dice is found by adding one to the 'itemSelected'.
+       // because indexing for arrays starts with zero and the number of dice
+       // on the labelCommands list starts with 1 and goes to 20 in increments
+       // of 1, this works. 
+       
+       func(itemSelected)
+       begin
+       	inherited:?pickActionScript(itemSelected);		// this method is defined internally
+       	numberOfDice := itemSelected + 1;
+       	print("Selected dice number " & numberOfDice);
+       end,
+     numberOfDice: 1,
+     debug: "diceNumber",
+     _proto: @190
+    };
+AddStepForm(diceMan, diceNumber);
+
+
+
+theAnswer :=
+    {
+     text:
+       // The answer is provided here
+       
+       "1234",
+     viewBounds: {left: 82, top: 26, right: 130, bottom: 42},
+     viewJustify: 8388612,
+     viewFont: ROM_fontSystem12,
+     debug: "theAnswer",
+     _proto: @218
+    };
+AddStepForm(diceMan, theAnswer);
+
+
+
+dicePlusOrMinus :=
+    {labelCommands: ["+","-"],
+     viewBounds: {left: 124, top: 4, right: 152, bottom: 16},
+     viewFormat: 50397776,
+     pickActionScript:
+       // This function gives us the string "+" or "-" which tells us
+       // if we need to add or subtract our dice modifier from our total.
+       
+       func(itemSelected)
+       begin
+       	inherited:?pickActionScript(itemSelected);		// this method is defined internally
+       	modifyRoll := labelCommands[itemSelected];
+       	print("Selected plus or minus " & modifyRoll);
+       end,
+     modifyRoll: "+",
+     debug: "dicePlusOrMinus",
+     _proto: @190
+    };
+AddStepForm(diceMan, dicePlusOrMinus);
+
+
+
+diceModify :=
+    {labelCommands: ["0", "1","2", "3", "4", "5", "6", "7", "8", "9", "10"],
+     viewBounds: {left: 164, top: 4, right: 200, bottom: 16},
+     viewFormat: 50397776,
+     pickActionScript:
+       // This function works like the one in the  diceNumber picker
+       // to find the dice modifier.
+       
+       func(itemSelected)
+       begin
+       	inherited:?pickActionScript(itemSelected);		// this method is defined internally
+       	amountToModify := itemSelected;
+       	print("Selected dice modifier " & amountToModify);
+       end,
+     amountToModify: 0,
+     debug: "diceModify",
+     _proto: @190
+    };
+AddStepForm(diceMan, diceModify);
+
+
+
+theTitle :=
+    {text: "DiceMan",
+     viewBounds: {left: 2, top: 26, right: 74, bottom: 42},
+     viewFont: ROM_fontSystem12Bold,
+     debug: "theTitle",
+     _proto: @218
+    };
+AddStepForm(diceMan, theTitle);
+
+
+
+
+constant |layout_main view| := diceMan;
+// End of file main view
+
+
+
